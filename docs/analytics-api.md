@@ -1,6 +1,6 @@
 # Analytics Collector Contract (v1)
 
-Version 1.2.0 supports optional remote product analytics. Remote analytics are disabled by default and require explicit WordPress administrator opt-in plus a configured HTTPS endpoint.
+Version 1.2.1 supports optional remote product analytics. Remote analytics are disabled by default and require explicit WordPress administrator opt-in plus a configured HTTPS endpoint.
 
 ## Anonymous payload
 
@@ -9,7 +9,7 @@ Version 1.2.0 supports optional remote product analytics. Remote analytics are d
   "schema_version": 1,
   "installation_id": "uuid",
   "plugin": "nepali-daily-rashifal",
-  "plugin_version": "1.2.0",
+  "plugin_version": "1.2.1",
   "wordpress_version": "6.x",
   "php_version": "8.x",
   "timezone": "Asia/Kathmandu",
