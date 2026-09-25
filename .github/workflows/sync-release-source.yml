@@ -1,0 +1,58 @@
+name: Sync release source
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dist/nepali-daily-rashifal-1.2.5.zip'
+      - '.github/workflows/sync-release-source.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract submitted plugin source
+        run: |
+          rm -rf /tmp/ndr-release
+          mkdir -p /tmp/ndr-release
+          unzip -q -o dist/nepali-daily-rashifal-1.2.5.zip -d /tmp/ndr-release
+          cp /tmp/ndr-release/nepali-daily-rashifal/nepali-daily-rashifal.php .
+          cp /tmp/ndr-release/nepali-daily-rashifal/readme.txt .
+          cp /tmp/ndr-release/nepali-daily-rashifal/LICENSE.txt .
+          cp /tmp/ndr-release/nepali-daily-rashifal/uninstall.php .
+          cp /tmp/ndr-release/nepali-daily-rashifal/index.php .
+
+      - name: Align GitHub README release version
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('README.md')
+          if p.exists():
+              s = p.read_text()
+              import re
+              s = re.sub(r'\*\*[0-9]+\.[0-9]+\.[0-9]+\*\*', '**1.2.5**', s, count=1)
+              s = s.replace('Version 1.2.0', 'Version 1.2.5')
+              s = s.replace('Version 1.2.1', 'Version 1.2.5')
+              s = s.replace('Version 1.2.4', 'Version 1.2.5')
+              p.write_text(s)
+          PY
+
+      - name: Commit synced source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add nepali-daily-rashifal.php readme.txt LICENSE.txt uninstall.php index.php README.md
+          if git diff --cached --quiet; then
+            echo "Source already aligned."
+            exit 0
+          fi
+          git commit -m "chore: sync submitted v1.2.5 source"
+          git push
