@@ -4,7 +4,7 @@ A WordPress plugin for publishing approved daily Nepali Vedic Rashifal posts fro
 
 ## Current release
 
-**1.2.0**
+**1.2.1**
 
 ## Features
 
