@@ -222,7 +222,16 @@ final class Nepali_Daily_Rashifal {
         $logs = array_slice(array_reverse(get_option(self::LOG_OPTION, array())), 0, 15);
         $next = wp_next_scheduled(self::CRON_HOOK);
         $retry = wp_next_scheduled(self::RETRY_HOOK);
-        $result = isset($_GET['ndr_result']) ? sanitize_text_field(wp_unslash($_GET['ndr_result'])) : '';
+        $result = '';
+        if (
+            isset($_GET['ndr_result'], $_GET['_ndr_notice_nonce']) &&
+            wp_verify_nonce(
+                sanitize_text_field(wp_unslash($_GET['_ndr_notice_nonce'])),
+                'ndr_admin_notice'
+            )
+        ) {
+            $result = sanitize_text_field(wp_unslash($_GET['ndr_result']));
+        }
         $categories = get_categories(array('hide_empty' => false));
         $authors = get_users(array('who' => 'authors'));
         ?>
@@ -359,7 +368,19 @@ final class Nepali_Daily_Rashifal {
         check_admin_referer('ndr_test_api');
         $data = $this->fetch_payload();
         $message = is_wp_error($data) ? $data->get_error_message() : 'API connection successful. Approved Rashifal received for ' . $data['dateKey'] . '.';
-        wp_safe_redirect(add_query_arg('ndr_result', rawurlencode($message), admin_url('admin.php?page=nepali-daily-rashifal')));
+        $this->redirect_with_notice($message);
+    }
+
+    private function redirect_with_notice($message) {
+        $url = add_query_arg(
+            array(
+                'page' => 'nepali-daily-rashifal',
+                'ndr_result' => rawurlencode((string) $message),
+                '_ndr_notice_nonce' => wp_create_nonce('ndr_admin_notice'),
+            ),
+            admin_url('admin.php')
+        );
+        wp_safe_redirect($url);
         exit;
     }
 
@@ -369,8 +390,7 @@ final class Nepali_Daily_Rashifal {
         }
         check_admin_referer('ndr_sync_now');
         $message = $this->sync();
-        wp_safe_redirect(add_query_arg('ndr_result', rawurlencode($message), admin_url('admin.php?page=nepali-daily-rashifal')));
-        exit;
+        $this->redirect_with_notice($message);
     }
 
     public function scheduled_sync() {
@@ -610,7 +630,7 @@ final class Nepali_Daily_Rashifal {
 
         $attachment = media_handle_sideload($file, $post_id, $title);
         if (is_wp_error($attachment)) {
-            @unlink($tmp);
+            wp_delete_file($tmp);
             return $attachment;
         }
 
