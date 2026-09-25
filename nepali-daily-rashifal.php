@@ -40,6 +40,7 @@ final class Nepali_Daily_Rashifal {
     private function __construct() {
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('admin_init', array($this, 'register_settings'));
+        add_action('admin_init', array($this, 'add_privacy_policy_content'));
         add_action('admin_post_ndr_sync_now', array($this, 'manual_sync'));
         add_action('admin_post_ndr_test_api', array($this, 'manual_test_api'));
         add_action(self::CRON_HOOK, array($this, 'scheduled_sync'));
@@ -68,7 +69,7 @@ final class Nepali_Daily_Rashifal {
             'cta_url' => '',
             'cta_label' => 'ज्योतिषसँग च्याट गर्नुहोस्',
             'source_label' => 'MuniAstro',
-            'show_source' => 1,
+            'show_source' => 0,
         );
     }
 
@@ -97,7 +98,7 @@ final class Nepali_Daily_Rashifal {
         $new['post_title'] = 'आजको वैदिक राशिफल';
         $new['slug_prefix'] = 'vaidic-rashifal';
         $new['timezone'] = 'Asia/Kathmandu';
-        $new['show_source'] = 1;
+        $new['show_source'] = 0;
         if (empty($legacy['latest_category_id'])) {
             $new['auto_detect_latest_category'] = 1;
         }
@@ -153,6 +154,17 @@ final class Nepali_Daily_Rashifal {
             'nepali_daily_rashifal',
             self::OPTION,
             array('sanitize_callback' => array($this, 'sanitize_settings'))
+        );
+    }
+
+    public function add_privacy_policy_content() {
+        if (!function_exists('wp_add_privacy_policy_content')) {
+            return;
+        }
+        $content = '<p>' . esc_html__('Nepali Daily Rashifal can contact the Rashifal API configured by the site administrator when the administrator tests the API, manually syncs, or enables scheduled publishing. The service receives normal server request metadata. Optional remote product analytics are disabled by default and are sent only after an administrator explicitly opts in and configures an HTTPS analytics endpoint. Local readership counters, when enabled, store aggregate counts in this WordPress database and do not store visitor IP addresses, cookies, accounts, or user-agent strings.', 'nepali-daily-rashifal') . '</p>';
+        wp_add_privacy_policy_content(
+            __('Nepali Daily Rashifal', 'nepali-daily-rashifal'),
+            wp_kses_post($content)
         );
     }
 
