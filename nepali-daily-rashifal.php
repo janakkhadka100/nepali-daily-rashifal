@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Nepali Daily Rashifal
- * Plugin URI: https://muniastro.com/
+ * Plugin URI: https://github.com/janakkhadka100/nepali-daily-rashifal
  * Description: Fetch and publish approved daily Nepali Vedic Rashifal with 12 zodiac readings, featured images, scheduling, categories, and duplicate protection.
  * Version: 1.1.0
  * Author: MuniAstro
