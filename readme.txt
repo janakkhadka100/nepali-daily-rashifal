@@ -80,6 +80,10 @@ The plugin stores its settings and recent sync-log entries in the WordPress data
 
 == Changelog ==
 
+= 1.2.5 =
+* Changed the Plugin URI to the public GitHub repository so it is distinct from the Author URI, as required by WordPress.org submission validation.
+* No functional changes.
+
 = 1.2.3 =
 * Removed the unnecessary manual translation loader and Domain Path header for WordPress.org-hosted translations.
 * Fixed the deprecated add_option() argument usage while keeping the anonymous installation UUID non-autoloaded.
