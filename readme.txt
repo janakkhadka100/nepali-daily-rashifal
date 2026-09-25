@@ -80,6 +80,13 @@ The plugin stores its settings and recent sync-log entries in the WordPress data
 
 == Changelog ==
 
+= 1.2.3 =
+* Removed the unnecessary manual translation loader and Domain Path header for WordPress.org-hosted translations.
+* Fixed the deprecated add_option() argument usage while keeping the anonymous installation UUID non-autoloaded.
+* Added nonce verification for admin notice query parameters.
+* Replaced direct unlink() usage with wp_delete_file().
+* No changes to publishing, consent defaults, or Rashifal content behavior.
+
 = 1.2.1 =
 * Updated WordPress.org metadata for WordPress 7.1.
 * Added direct MuniAstro Terms of Use and Privacy Policy links for the external service disclosure.
@@ -98,6 +105,9 @@ The plugin stores its settings and recent sync-log entries in the WordPress data
 * Added external-service disclosure and GPL licensing.
 
 == Upgrade Notice ==
+
+= 1.2.3 =
+Plugin Check hardening for WordPress.org submission.
 
 = 1.2.1 =
 Submission-hardening update: source credit is now opt-in by default, external-service legal links are documented, and no site URL is placed in the default API User-Agent.
