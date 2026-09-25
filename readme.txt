@@ -1,8 +1,8 @@
 === Nepali Daily Rashifal ===
-Contributors: muniastro
+Contributors: janakkhadka
 Tags: rashifal, horoscope, nepali, vedic astrology, automation
 Requires at least: 6.2
-Tested up to: 6.8
+Tested up to: 7.1
 Stable tag: 1.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -80,6 +80,14 @@ The plugin stores its settings and recent sync-log entries in the WordPress data
 
 == Changelog ==
 
+= 1.2.1 =
+* Updated WordPress.org metadata for WordPress 7.1.
+* Added direct MuniAstro Terms of Use and Privacy Policy links for the external service disclosure.
+* Made public source credit opt-in by default.
+* Removed the site URL from the default Rashifal API User-Agent.
+* Added suggested Privacy Policy text in WordPress privacy settings.
+* Kept remote analytics and site identification disabled by default.
+
 = 1.1.0 =
 * Public release as Nepali Daily Rashifal.
 * Added configurable API, title, categories, author, post status, timezone and schedule.
@@ -90,6 +98,9 @@ The plugin stores its settings and recent sync-log entries in the WordPress data
 * Added external-service disclosure and GPL licensing.
 
 == Upgrade Notice ==
+
+= 1.2.1 =
+Submission-hardening update: source credit is now opt-in by default, external-service legal links are documented, and no site URL is placed in the default API User-Agent.
 
 = 1.1.0 =
 Deactivate the old MuniAstro Daily Rashifal Publisher before activating this renamed plugin.
